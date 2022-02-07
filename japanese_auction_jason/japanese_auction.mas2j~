@@ -1,0 +1,10 @@
+MAS japanese_auction {
+
+    infrastructure: Centralised
+
+    agents:	seller [goals="sell(a, 100, 1.1)"];
+			seller [goals="sell(b, 100, 1.2)"];
+			buyer [beliefs="i_want(a, 250), i_want(b, 250), money(300)"]#5;
+			buyer [beliefs="i_want(a, 250), i_want(b, 300), money(500)"]#1;
+			buyer [beliefs="i_want(a, 400), i_want(b, 100), money(400)"]#1;
+}
