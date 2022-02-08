@@ -23,7 +23,7 @@
 		
 +!raise_price(Item, Price, IncreaseRate)
 	: 	.findall(A, iwp(Item)[source(A)], B) & .length(B,X) & X > 1
-	<-	.print("Raising price from ", Price, " to ", Price * IncreaseRate);
+	<-	//.print("Raising price from ", Price, " to ", Price * IncreaseRate);
 		.send(B, tell, selling(Item, Price * IncreaseRate));
 		.wait(100); //waiting for untell
 		!raise_price(Item, Price * IncreaseRate, IncreaseRate).
