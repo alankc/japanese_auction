@@ -8,7 +8,14 @@
 
 /* Plans */
 
-+!start : true <- .print("hello world.").
++!start : true <- 	
+					for ( focused(_,_,ArtId) ) {
+						enter[artifact_id(ArtId)];
+          				startAuction[artifact_id(ArtId)]
+      				}.
+					
++value(V)[artifact_id(ArtId)]: true <- .print("Valor: ", V, " source = ", ArtId).					
+										
 
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

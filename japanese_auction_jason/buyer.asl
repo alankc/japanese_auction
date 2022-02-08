@@ -2,12 +2,12 @@
 //****** BUYER ***********
 //************************
 
-//Initial goals
-!register.
-
 //Test
 i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) & 
 								(T >= Price) & (MaxValue >= Price).
+
+//Initial goals
+!register.
 
 //Initial beliefs
 //money(Value)

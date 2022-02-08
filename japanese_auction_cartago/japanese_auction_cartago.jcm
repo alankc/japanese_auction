@@ -13,10 +13,44 @@
 */
 
 mas japanese_auction_cartago {
-
-    agent sample_agent
-
+	
+    agent b1 : buyer.asl {
+    	beliefs:	i_want(a, 250)
+    				i_want(b, 250)
+    				money(300)
+    }
     
+	agent b2 : buyer.asl {
+		beliefs:	i_want(a, 250)
+					i_want(b, 300)
+					money(500)
+	}
+	
+	agent b3 : buyer.asl {
+		beliefs:	i_want(a, 400)
+					i_want(b, 500)
+					money(1000)
+	}
+    
+    agent s1 : seller.asl {
+    	goals:	sell(a, 100, 1.1)
+				sell(b, 100, 1.05)
+    }
+    
+    agent s2 : seller.asl {
+    	goals:	sell(b, 100, 1.2)
+    }
+    
+    /*agent sample_agent {
+    	//focus: 	room.tst1
+    	//focus:	room.tst2
+    }*/
+    
+    workspace room {
+    	//String itemName, double value, double increaseRate, long delay
+        //artifact tst1: tools.AuctionRoom("ItemA", 100, 1.5, 500)
+        //artifact tst2: tools.AuctionRoom("ItemB", 100, 1.5, 500)
+    }
 
 }
 
