@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cartago.*;
+import jason.asSyntax.Atom;
 
 public class AuctionRoom extends Artifact {
 	
@@ -30,7 +31,8 @@ public class AuctionRoom extends Artifact {
 	
 	@OPERATION
 	void set(String itemName, double value, double increaseRate, long delay) {
-		defineObsProperty("item", itemName);
+		defineObsProperty("item", new Atom(itemName));
+		//defineObsProperty("item", itemName);
 		defineObsProperty("value", value);
 		
 		this.increaseRate = increaseRate;
@@ -65,7 +67,7 @@ public class AuctionRoom extends Artifact {
 	@OPERATION
 	void startAuction() {
 		if (remainingBuyers.isEmpty()) {
-			defineObsProperty("winner", "fail");
+			defineObsProperty("winner", new Atom("fail"));
 		} else {
 			execInternalOp("raise_price");
 		}
@@ -89,9 +91,9 @@ public class AuctionRoom extends Artifact {
 		}
 		
 		if (remainingBuyers.isEmpty()) {
-			defineObsProperty("winner", "fail");
+			defineObsProperty("winner", new Atom("fail"));
 		} else {
-			defineObsProperty("winner", remainingBuyers.get(0));
+			defineObsProperty("winner", new Atom(remainingBuyers.get(0)));
 		}
 	}
 }
