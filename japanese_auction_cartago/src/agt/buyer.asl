@@ -39,11 +39,11 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 	<-	.print("Geting out of ", Item, " from ", ArtId);
 		-iwp(Item, ArtId);
 		quit[artifact_id(ArtId)];
-		stopFocus(ArtId); //Get out of the artifact
+		stopFocus(ArtId); //Get out of the artifact.
 		.
 		
 +winner(WinAg)[artifact_id(ArtId)]
-	:	.my_name(Me) & .substring(Me,WinAg)
+	:	.my_name(Me) & .substring(Me,WinAg) //Me is a term, WinAg is a string
 	<- 	?iwp(Item, ArtId);
 		?value(Price)[artifact_id(ArtId)];
 		?money(Value);
@@ -51,7 +51,8 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		-i_want(Item, _);
 		+won(Item, Price);
 		-+money(Value - Price);
-		.print("I won the item (", Item, ") from ", ArtId, ". I paid ", Price, ". Now I have ", Value - Price).
+		stopFocus(ArtId);  //Get out of the artifact.
+		.print("I won the item (", Item, ") from ", ArtId, ". I paid ", Price, ". Now I have ", Value - Price).	
 		
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }		
