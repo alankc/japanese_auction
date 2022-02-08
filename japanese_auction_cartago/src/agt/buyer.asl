@@ -38,7 +38,9 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 	: 	iwp(Item, ArtId) & not i_can_buy(Item, Price) //item(Item)[artifact_id(ArtId)] & not i_can_buy(Item, Price)  
 	<-	.print("Geting out of ", Item, " from ", ArtId);
 		-iwp(Item, ArtId);
-		quit[artifact_id(ArtId)].
+		quit[artifact_id(ArtId)];
+		stopFocus(ArtId); //Get out of the artifact
+		.
 		
 +winner(WinAg)[artifact_id(ArtId)]
 	:	.my_name(Me) & .substring(Me,WinAg)
