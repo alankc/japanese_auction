@@ -25,7 +25,7 @@
 		focus(ArtId);
 		
 		//Setting parameters of the auction
-		set(Item, StartPrice, IncreaseRate, 500)[artifact_id(ArtId)];
+		set(Item, StartPrice, IncreaseRate, 100)[artifact_id(ArtId)];
 		
 		//Sending information to potential buyers
 		.df_search("buyer", PB);
