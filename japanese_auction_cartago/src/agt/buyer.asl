@@ -42,11 +42,12 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		
 +winner(WinAg)[artifact_id(ArtId)]
 	:	.my_name(Me) & .substring(Me,WinAg)
-	<- 	?item(Item)[artifact_id(ArtId)];
+	<- 	?iwp(Item, ArtId);
 		?value(Price)[artifact_id(ArtId)];
 		?money(Value);
 		-iwp(Item, ArtId);
 		-i_want(Item, _);
+		+won(Item, Price);
 		-+money(Value - Price);
 		.print("I won the item (", Item, ") from ", ArtId, ". I paid ", Price, ". Now I have ", Value - Price).
 		

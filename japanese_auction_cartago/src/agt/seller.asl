@@ -37,17 +37,15 @@
 		.
 
 +winner(WinAG)[artifact_id(ArtId)] 
-	: 	item(Item)[artifact_id(ArtId)] & 
-		value(Price)[artifact_id(ArtId)] &  
-		WinAG \== "fail"
+	: 	WinAG \== "fail"
 	<- 	.print(WinAG, " won!");
+		.wait(1000); //one second to get results
 		disposeArtifact(ArtId).
 		
 +winner(WinAG)[artifact_id(ArtId)] 
-	: 	item(Item)[artifact_id(ArtId)] & 
-		value(Price)[artifact_id(ArtId)] &  
-		WinAG == "fail"
+	: 	WinAG == "fail"
 	<- 	.print("Failure ", Item, " RS ", Price);
+		.wait(1000);  //one second to get results
 		disposeArtifact(ArtId).	
 		
 { include("$jacamoJar/templates/common-cartago.asl") }
