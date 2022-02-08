@@ -30,24 +30,21 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		lookupArtifact(ArtName, ArtId);
 		focus(ArtId);
 		enter[artifact_id(ArtId)];
-		+iwp(Item, ArtId);
 		. 
 
 //Getting out and not entering anymore in the arena	
  +value(Price)[artifact_id(ArtId)] 
-	: 	iwp(Item, ArtId) & not i_can_buy(Item, Price) //item(Item)[artifact_id(ArtId)] & not i_can_buy(Item, Price)  
+	: 	item(Item)[artifact_id(ArtId)] & not i_can_buy(Item, Price)  
 	<-	.print("Geting out of ", Item, " from ", ArtId);
-		-iwp(Item, ArtId);
 		quit[artifact_id(ArtId)];
 		stopFocus(ArtId); //Get out of the artifact.
 		.
 		
 +winner(WinAg)[artifact_id(ArtId)]
-	:	.my_name(Me) & .substring(Me,WinAg) //Me is a term, WinAg is a string
-	<- 	?iwp(Item, ArtId);
+	:	.my_name(Me) & Me == WinAg
+	<- 	?item(Item)[artifact_id(ArtId)];
 		?value(Price)[artifact_id(ArtId)];
 		?money(Value);
-		-iwp(Item, ArtId);
 		-i_want(Item, _);
 		+won(Item, Price);
 		-+money(Value - Price);
