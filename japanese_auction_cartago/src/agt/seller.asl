@@ -37,14 +37,16 @@
 		.
 
 +winner(WinAG)[artifact_id(ArtId)] 
-	: 	WinAG \== "fail"
+	: 	WinAG \== fail
 	<- 	.print(WinAG, " won!");
 		.wait(1000); //one second to get results
 		disposeArtifact(ArtId).
 		
 +winner(WinAG)[artifact_id(ArtId)] 
-	: 	WinAG == "fail"
-	<- 	.print("Failure ", Item, " RS ", Price);
+	: 	WinAG == fail
+	<- 	?item(Item)[artifact_id(ArtId)];
+		?value(Price)[artifact_id(ArtId)];
+		.print("Failure ", Item, " RS ", Price);
 		.wait(1000);  //one second to get results
 		disposeArtifact(ArtId).	
 		
