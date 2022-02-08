@@ -23,6 +23,7 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		.df_subscribe("seller").
 
 //Entering in the arena
+@s1[atomic]
 +selling(Item, Price)[source(A)]
 	: 	i_can_buy(Item, Price) & not iwp(Item, A)
 	<-	.print("Participating in ", Item);
