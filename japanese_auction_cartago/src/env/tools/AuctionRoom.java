@@ -84,7 +84,7 @@ public class AuctionRoom extends Artifact {
 			double newValue = (double)price.getValue();
 			newValue = newValue * increaseRate;
 			price.updateValue(newValue);
-			signal("new_value");
+			//System.out.println("Raising price from " + price.getValue() + " to " + newValue);
 			this.await_time(delay);
 		}
 		
