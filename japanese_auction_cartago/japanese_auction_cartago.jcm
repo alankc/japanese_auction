@@ -15,6 +15,7 @@
 mas japanese_auction_cartago {
 	
     agent b1 : buyer.asl {
+    	instances: 2
     	beliefs:	i_want(a, 250)
     				i_want(b, 250)
     				money(300)
@@ -23,7 +24,7 @@ mas japanese_auction_cartago {
 	agent b2 : buyer.asl {
 		beliefs:	i_want(a, 300)
 					i_want(b, 300)
-					money(500)
+					money(1000)
 	}
 	
 	agent b3 : buyer.asl {
