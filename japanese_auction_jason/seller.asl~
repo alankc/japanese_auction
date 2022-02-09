@@ -29,7 +29,7 @@
 		!raise_price(Item, Price * IncreaseRate, IncreaseRate).
 		
 +!raise_price(Item, Price, IncreaseRate)
-	: 	.findall(A, iwp(Item)[source(A)], B)  & .length(B,X) & X == 1
+	: 	.findall(A, iwp(Item)[source(A)], B)  & .length(B,1)
 	<-	.print(B, " won!");
 		.send(B, tell, won(Item, Price)).		
 	
