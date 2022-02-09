@@ -46,7 +46,7 @@ public class AuctionRoom extends Artifact {
 		
 		//Can enter only one time
 		if (buyers.contains(name)) {
-			failed("You have enter already!");
+			failed("You have entered already!");
 		} else {
 			buyers.add(name);
 			remainingBuyers.add(name);

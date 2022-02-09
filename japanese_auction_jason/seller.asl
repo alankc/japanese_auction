@@ -35,4 +35,3 @@
 	
 +!raise_price(Item, Price, IncreaseRate)
 	<-	.print("Failure ", Item, " RS ", Price).	
-		

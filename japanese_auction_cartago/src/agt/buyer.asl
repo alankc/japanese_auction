@@ -33,7 +33,7 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		. 
 
 //Getting out and not entering anymore in the arena	
- +value(Price)[artifact_id(ArtId)] 
++value(Price)[artifact_id(ArtId)] 
 	: 	item(Item)[artifact_id(ArtId)] & not i_can_buy(Item, Price)  
 	<-	.print("Geting out of ", Item, " from ", ArtId);
 		quit[artifact_id(ArtId)];
