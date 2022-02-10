@@ -10,9 +10,14 @@
 
 //Plans
 
+//Each time it receives a belief to sell something, it reseats the goal auction_item
+//Can receive only one per time!!!!!
++sell(I, SP, IR) : true <- resetGoal(auction_item).
+
 +!sync[scheme(S)]
 	: 	sell(I, SP, IR) //Retrieving the only belief to sell. To work it can have only ONE
 	<- 	.print("Selling ", I," for ", SP," and increase rate of ", IR);
+		-sell(I, SP, IR);
 		!sell(I, SP, IR);
 		.		
 
@@ -69,7 +74,6 @@
 		lookupArtifact(ArtName, ArtId);
 		disposeArtifact(ArtId);
 		.
-				
 		
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }
