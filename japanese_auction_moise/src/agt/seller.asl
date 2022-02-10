@@ -12,6 +12,7 @@
 
 //Each time it receives a belief to sell something, it reseats the goal auction_item
 //Can receive only one per time!!!!!
+//You can create a REPL agent and send the belief: .send(s1, tell, sell(b, 25, 1.3))
 +sell(I, SP, IR) : true <- resetGoal(auction_item).
 
 +!sync[scheme(S)]
