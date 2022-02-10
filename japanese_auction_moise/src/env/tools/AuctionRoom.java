@@ -90,6 +90,8 @@ public class AuctionRoom extends Artifact {
 			this.await_time(delay);
 		}
 		
+		signal("end_auction");
+		
 		if (remainingBuyers.isEmpty()) {
 			defineObsProperty("winner", new Atom("fail"));
 		} else {

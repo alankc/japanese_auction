@@ -7,31 +7,27 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 							(T >= Price) & (MaxValue >= Price).
 
 //Initial goals
-!register.
 
-//Initial beliefs
-//money(Value)
-//The money I have
-//money(1000).
-//i_want(Item, Value)
-//I want Item paying no more than Value
-//i_want(tst, 250).
 
 //Plans
-+!register 
-	<-	joinWorkspace(room, WspId);
-		.df_register("buyer");
-		.df_subscribe("seller").
-
-//Entering in the arena
-+selling(Item, Price, ArtName)[source(A)]
-	: 	i_can_buy(Item, Price)
-	<-	.print("Participating in ", Item);
-		lookupArtifact(ArtName, ArtId);
-		focus(ArtId);
-		enter[artifact_id(ArtId)];
-		. 
-
++!enter_auction[scheme(S)]
+	<- 	?goalArgument(S, enter_auction, "auction_room_name", ArtName);
+		?goalArgument(S, enter_auction, "item_name", Item);
+		?goalArgument(S, enter_auction, "item_price", Price);	
+		if(i_can_buy(Item, Price))
+		{
+			joinWorkspace(room, WspId);
+			lookupArtifact(ArtName, ArtId)[wid(WspId)];
+			focus(ArtId)[wid(WspId)];
+			enter[artifact_id(ArtId)];
+			.print("Entering the auction")
+		}
+		else
+		{
+			.print("NOT entering the auction")
+		}
+		.
+	
 //Getting out and not entering anymore in the arena	
 +value(Price)[artifact_id(ArtId)] 
 	: 	item(Item)[artifact_id(ArtId)] & not i_can_buy(Item, Price)  
@@ -39,9 +35,17 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		quit[artifact_id(ArtId)];
 		stopFocus(ArtId); //Get out of the artifact.
 		.
+
++!pay_seller[scheme(S)]
+	<- 	?goalArgument(S, pay_seller, "auction_room_name", ArtName);
+		lookupArtifact(ArtName, ArtId);
+		!payment(ArtId)
+		.	
+
++!payment(ArtId)
+	: 	winner(WinAg)[artifact_id(ArtId)] &
+		.my_name(Me) & Me == WinAg
 		
-+winner(WinAg)[artifact_id(ArtId)]
-	:	.my_name(Me) & Me == WinAg
 	<- 	?item(Item)[artifact_id(ArtId)];
 		?value(Price)[artifact_id(ArtId)];
 		?money(Value);
@@ -49,7 +53,12 @@ i_can_buy(Item, Price) :- 	i_want(Item, MaxValue) & money(T) &
 		+won(Item, Price);
 		-+money(Value - Price);
 		stopFocus(ArtId);  //Get out of the artifact.
-		.print("I won the item (", Item, ") from ", ArtId, ". I paid ", Price, ". Now I have ", Value - Price).	
+		.print("I won the item (", Item, ") from ", ArtId, ". I paid ", Price, ". Now I have ", Value - Price);
+		.	
+
++!payment(ArtId).
+			
 		
 { include("$jacamoJar/templates/common-cartago.asl") }
-{ include("$jacamoJar/templates/common-moise.asl") }		
+{ include("$jacamoJar/templates/common-moise.asl") }
+{ include("$moiseJar/asl/org-obedient.asl") }	

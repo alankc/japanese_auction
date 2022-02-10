@@ -4,51 +4,80 @@
 
 //Initial goals
 !register.
-
 //Initial beliefs
 
 
 //Plans
-+!register <- 	joinWorkspace(room, WspId);
-				.df_register("seller").
++!register <- 	.df_register("seller").
 
 +!sell(Item, StartPrice, IncreaseRate)
-	<-	//Waiting buyers registring
-		.wait(500);
-		
+	<-	.wait(1000); //waiting group formation
 		//Creating Artifact name
 		.my_name(Me);
 		.concat(Me,act_, Item, ArtName);
 		
 		//Making Artifact
-		makeArtifact(ArtName, "tools.AuctionRoom", [], ArtId);
-		focus(ArtId);
-		
+		joinWorkspace(room, WspId);
+		makeArtifact(ArtName, "tools.AuctionRoom", [], ArtId)[wid(WspId)];
+		focus(ArtId)[wid(WspId)];
 		//Setting parameters of the auction
-		set(Item, StartPrice, IncreaseRate, 100)[artifact_id(ArtId)];
+		set(Item, StartPrice, IncreaseRate, 100)[artifact_id(ArtId),wid(WspId)];
+			
+		//Setting arguments
+		setArgumentValue(enter_auction, auction_room_name, ArtName);
+		setArgumentValue(enter_auction, item_name, Item);
+		setArgumentValue(enter_auction, item_price, StartPrice);
+		setArgumentValue(start_auction, auction_room_name, ArtName);
+		setArgumentValue(set_winner, auction_room_name, ArtName);
+		setArgumentValue(pay_seller, auction_room_name, ArtName);
+		setArgumentValue(dispose_auction_room, auction_room_name, ArtName);
 		
-		//Sending information to potential buyers
-		.df_search("buyer", PB);
-		.send(PB, tell, selling(Item, StartPrice, ArtName));
-		
-		//Starting auction
+		//Sync enter in room
 		.wait(1000);
-		startAuction[artifact_id(ArtId)];
+		+rum_enter
+		
+		.wait(1000);
+		+rum_auction
 		.
 
-+winner(WinAG)[artifact_id(ArtId)] 
-	: 	WinAG \== fail
-	<- 	.print(WinAG, " won!");
-		.wait(1000); //one second to get results
-		disposeArtifact(ArtId).
++!sync[scheme(S)]
+	<- 	.wait({+rum_enter});
+		-rum_enter.
+	
++!start_auction[scheme(S)]
+	<- 	.wait({+rum_auction});
+		-rum_auction;
+		.print("Starting auction!");
+		?goalArgument(S, enter_auction, "auction_room_name", ArtName);
+		lookupArtifact(ArtName, ArtId);
+		focus(ArtId);
+		startAuction[artifact_id(ArtId)]
+		.	
 		
-+winner(WinAG)[artifact_id(ArtId)] 
-	: 	WinAG == fail
++!set_winner[scheme(S)]
+	<- 	?goalArgument(S, set_winner, "auction_room_name", ArtName);
+		lookupArtifact(ArtName, ArtId);
+		//wait result
+		.wait({+winner(WinAG)[artifact_id(ArtId)]});
+		!set_ag_winner(ArtId).		
+
++!set_ag_winner(ArtId)
+	: winner(WinAG)[artifact_id(ArtId)] & WinAG \== fail
+	<- 	.print(WinAG, " won!").
+		
++!set_ag_winner(ArtId)
+	: 	winner(WinAG)[artifact_id(ArtId)] & WinAG == fail
 	<- 	?item(Item)[artifact_id(ArtId)];
 		?value(Price)[artifact_id(ArtId)];
-		.print("Failure ", Item, " RS ", Price);
-		.wait(1000);  //one second to get results
-		disposeArtifact(ArtId).	
+		.print("Failure ", Item, " RS ", Price).
+		
++!dispose_auction_room[scheme(S)]
+	<-	.print("Disposing...");
+		?goalArgument(S, dispose_auction_room, "auction_room_name", ArtName);
+		lookupArtifact(ArtName, ArtId);
+		disposeArtifact(ArtId).
+		
 		
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }
+{ include("$moiseJar/asl/org-obedient.asl") }
