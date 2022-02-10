@@ -11,7 +11,7 @@
 //Plans
 
 +!sync[scheme(S)]
-	: 	sell(I, SP, IR)
+	: 	sell(I, SP, IR) //Retrieving the only belief to sell. To work it can have only ONE
 	<- 	.print("Selling ", I," for ", SP," and increase rate of ", IR);
 		!sell(I, SP, IR);
 		.		
