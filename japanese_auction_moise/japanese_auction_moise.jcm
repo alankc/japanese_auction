@@ -15,16 +15,15 @@
 mas japanese_auction_moise {
 	
     agent b1 : buyer.asl {
-    	instances: 5
     	beliefs:	i_want(a, 250)
     				i_want(b, 250)
     				money(300)
     }
     
 	agent b2 : buyer.asl {
-		beliefs:	i_want(a, 250)
+		beliefs:	i_want(a, 600)
 					i_want(b, 300)
-					money(500)
+					money(600)
 	}
 	
 	agent b3 : buyer.asl {
@@ -34,11 +33,11 @@ mas japanese_auction_moise {
 	}
     
     agent s1 : seller.asl {
-    	goals:	sell(a, 100, 1.1)
+    	beliefs:	sell(a, 100, 1.1)
     }
     
     agent s2 : seller.asl {
-    	goals:	sell(b, 100, 1.2)
+    	beliefs:	sell(b, 150, 1.15)
     }
     
     

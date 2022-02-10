@@ -3,16 +3,21 @@
 //************************
 
 //Initial goals
-!register.
+
+
 //Initial beliefs
 
 
 //Plans
-+!register <- 	.df_register("seller").
+
++!sync[scheme(S)]
+	: 	sell(I, SP, IR)
+	<- 	.print("Selling ", I," for ", SP," and increase rate of ", IR);
+		!sell(I, SP, IR);
+		.		
 
 +!sell(Item, StartPrice, IncreaseRate)
-	<-	.wait(1000); //waiting group formation
-		//Creating Artifact name
+	<-	//Creating Artifact name
 		.my_name(Me);
 		.concat(Me,act_, Item, ArtName);
 		
@@ -31,36 +36,23 @@
 		setArgumentValue(set_winner, auction_room_name, ArtName);
 		setArgumentValue(pay_seller, auction_room_name, ArtName);
 		setArgumentValue(dispose_auction_room, auction_room_name, ArtName);
-		
-		//Sync enter in room
-		.wait(1000);
-		+rum_enter
-		
-		.wait(1000);
-		+rum_auction
 		.
 
-+!sync[scheme(S)]
-	<- 	.wait({+rum_enter});
-		-rum_enter.
-	
 +!start_auction[scheme(S)]
-	<- 	.wait({+rum_auction});
-		-rum_auction;
-		.print("Starting auction!");
+	<- 	.print("Starting auction!");
 		?goalArgument(S, enter_auction, "auction_room_name", ArtName);
 		lookupArtifact(ArtName, ArtId);
 		focus(ArtId);
 		startAuction[artifact_id(ArtId)]
-		.	
-		
+		.
+	
 +!set_winner[scheme(S)]
 	<- 	?goalArgument(S, set_winner, "auction_room_name", ArtName);
 		lookupArtifact(ArtName, ArtId);
 		//wait result
 		.wait({+winner(WinAG)[artifact_id(ArtId)]});
-		!set_ag_winner(ArtId).		
-
+		!set_ag_winner(ArtId).	
+					
 +!set_ag_winner(ArtId)
 	: winner(WinAG)[artifact_id(ArtId)] & WinAG \== fail
 	<- 	.print(WinAG, " won!").
@@ -75,8 +67,9 @@
 	<-	.print("Disposing...");
 		?goalArgument(S, dispose_auction_room, "auction_room_name", ArtName);
 		lookupArtifact(ArtName, ArtId);
-		disposeArtifact(ArtId).
-		
+		disposeArtifact(ArtId);
+		.
+				
 		
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }
