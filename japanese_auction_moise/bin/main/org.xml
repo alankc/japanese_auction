@@ -28,8 +28,7 @@
 	</structural-specification>
 	
 	<functional-specification>
-	    <scheme id="auction_room">
-	        
+	    <scheme id="auction_room">       
 	        <goal id="auction_item">
 	            <plan operator="sequence">
 	            	<goal id="sync"/>
@@ -60,22 +59,17 @@
 	            <goal id="dispose_auction_room"/>
 	        </mission>
 	        
-	        <mission id="mEnter" min="1" max="100">
+	        <mission id="mBuy" min="1" max="100">
 	            <goal id="enter_auction"/>
-	        </mission>
-	        
-	        <mission id="mPay" min="1" max="100">
 	            <goal id="pay_seller"/>
 	        </mission>
-	        
 	    </scheme>
 	</functional-specification>
 	
 	<normative-specification>
 	    <!-- the norms of the application -->
 	    <norm id="n1" type="obligation" role="seller" mission="mSell"/>
-	    <norm id="n2" type="obligation" role="buyer" mission="mEnter"/>
-	    <norm id="n3" type="obligation" role="buyer" mission="mPay"/>
+	    <norm id="n2" type="obligation" role="buyer" mission="mBuy"/>
 	</normative-specification>
 
 </organisational-specification>
